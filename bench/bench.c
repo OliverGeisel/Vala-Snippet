@@ -1,3 +1,5 @@
+#include <bits/time.h>
+#include <bits/types/clockid_t.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -6,7 +8,7 @@
 #define BESONDERER_FEHLER 0
 #define KEIN_FEHLER 1
 
-const const int A_A(const int i);
+const int A_A(const int i);
 const int B_A(const int i);
 const int C_A(const int i);
 const int D_A(const int i);
@@ -59,7 +61,7 @@ const int E_A(const int i) { return FEHLER; }
 int run_A() {
   const int i = 1;
   if (A_A(i) < FEHLER) {
-    printf("There was an error!\n");
+    perror("There was an error!\n");
   }
   return 0;
 }
@@ -93,26 +95,30 @@ const int E_F(const int i) { return BESONDERER_FEHLER; }
 int run_F() {
   const int i = 1;
   if (A_F(i) <= FEHLER) {
-    printf("There was an error!\n");
+    perror("There was an error!\n");
   }
   return 0;
 }
 
-static inline double gtod() {
-  struct timeval act_time;
-  gettimeofday(&act_time, NULL);
-  return (double)act_time.tv_sec + (double)act_time.tv_usec / 1000000.0;
+static inline struct timespec gtod() {
+  struct timespec back;
+  int clock = clock_gettime(CLOCK_REALTIME, &back);
+  return back;
 }
 
 int main(int argc, char **args) {
-  double start = gtod();
+  struct timespec start = gtod();
   run_A();
-  double end = gtod();
-  double diff = end - start;
-  printf("Alle Funktionen:\t%.6fs\t%fms\n", diff, diff * 1000);
+  struct timespec end = gtod();
+  double diff_sec = end.tv_sec - start.tv_sec;
+  double diff_nano_sec = end.tv_nsec - start.tv_nsec;
+  double pres_diff = diff_sec + diff_nano_sec/1000000000;
+  printf("Alle Funktionen:\t%.6fs\t%fms\n", pres_diff, pres_diff * 1000);
   start = gtod();
   run_F();
   end = gtod();
-  diff = end - start;
-  printf("Nur erste Funktion:\t%.6fs\t%fms\n", diff, diff * 1000);
+  diff_sec = end.tv_sec - start.tv_sec;
+  diff_nano_sec = end.tv_nsec - start.tv_nsec;
+  pres_diff = diff_sec + diff_nano_sec / 1000000000;
+  printf("Nur erste Funktion:\t%.6fs\t%fms\n", pres_diff, pres_diff * 1000);
 }
