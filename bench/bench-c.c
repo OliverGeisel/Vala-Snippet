@@ -1,3 +1,4 @@
+#include <math.h>
 #include <bits/time.h>
 #include <bits/types/clockid_t.h>
 #include <stdio.h>
@@ -7,6 +8,9 @@
 #define FEHLER -1
 #define BESONDERER_FEHLER 0
 #define KEIN_FEHLER 1
+
+#define WARMUP 10000
+#define MEASURE 1000000
 
 const int A_A(const int i);
 const int B_A(const int i);
@@ -31,6 +35,8 @@ const int B_D(const int i);
 const int C_D(const int i);
 const int D_D(const int i);
 const int E_D(const int i);
+
+static inline struct timespec gtod();
 
 const int A_A(const int i) {
   if (B_A(i) <= FEHLER)
@@ -58,10 +64,27 @@ const int D_A(const int i) {
 
 const int E_A(const int i) { return FEHLER; }
 
-int run_A() {
+int run_A(struct timespec *results) {
   const int i = 1;
-  if (A_A(i) < FEHLER) {
-    perror("There was an error!\n");
+  struct timespec start, end;
+
+  // warm up
+  int run;
+  for (run = 0; run < WARMUP; ++run) {
+    if (A_A(i) < FEHLER) {
+      perror("There was an error!\n");
+    }
+  }
+
+  // REAL run
+  for (run = 0; run < MEASURE; ++run) {
+    start = gtod();
+    if (A_A(i) < FEHLER) {
+      perror("There was an error!\n");
+    }
+    end = gtod();
+    results[run * 2] = start;
+    results[run * 2 + 1] = end;
   }
   return 0;
 }
@@ -92,33 +115,83 @@ const int D_F(const int i) {
 
 const int E_F(const int i) { return BESONDERER_FEHLER; }
 
-int run_F() {
+int run_F(struct timespec *results) {
   const int i = 1;
-  if (A_F(i) <= FEHLER) {
-    perror("There was an error!\n");
+  struct timespec start, end;
+
+  // warm up
+  int run;
+  for (run = 0; run < WARMUP; ++run) {
+    if (A_F(i) < FEHLER) {
+      perror("There was an error!\n");
+    }
+  }
+
+  // REAL run
+  for (run = 0; run < MEASURE; ++run) {
+    start = gtod();
+    if (A_F(i) < FEHLER) {
+      perror("There was an error!\n");
+    }
+    end = gtod();
+    results[run * 2] = start;
+    results[run * 2 + 1] = end;
   }
   return 0;
 }
 
 static inline struct timespec gtod() {
   struct timespec back;
-  int clock = clock_gettime(CLOCK_REALTIME, &back);
+  int clock = clock_gettime(0, &back);
   return back;
 }
 
-int main(int argc, char **args) {
-  struct timespec start = gtod();
-  run_A();
-  struct timespec end = gtod();
+void evaluate(struct timespec *results, struct timespec start,
+              struct timespec end) {
   double diff_sec = end.tv_sec - start.tv_sec;
   double diff_nano_sec = end.tv_nsec - start.tv_nsec;
-  double pres_diff = diff_sec + diff_nano_sec/1000000000;
-  printf("Alle Funktionen:\t%.6fs\t%fms\n", pres_diff, pres_diff * 1000);
+  double pres_diff = diff_sec + diff_nano_sec / 1000000000;
+
+  double sum = 0.0;
+  double expectaion_value;
+  for (int i = 0; i < MEASURE; ++i) {
+    double diff_sec = results[i * 2 + 1].tv_sec - results[i * 2].tv_sec;
+    double diff_nano_sec = results[i * 2 + 1].tv_nsec - results[i * 2].tv_nsec;
+    double pres_diff = diff_sec + diff_nano_sec / 1000000000;
+    sum += pres_diff;
+  }
+  double variance;
+  expectaion_value = sum / MEASURE;
+  double temp = 0;
+  for (int i = 0; i < MEASURE; ++i) {
+    double diff_sec = results[i * 2 + 1].tv_sec - results[i * 2].tv_sec;
+    double diff_nano_sec = results[i * 2 + 1].tv_nsec - results[i * 2].tv_nsec;
+    double pres_diff = diff_sec + diff_nano_sec / 1000000000;
+    temp += pow(pres_diff - expectaion_value, 2);
+  }
+  variance = temp / MEASURE;
+  //double standard_deviation = sqrt(variance);
+  printf("Gesamte Zeit:\t%.6fs\t%fms\n", pres_diff, pres_diff * 1000);
+  printf("Durchschnittliche Zeit:\t%.6fs\t%fms\n", expectaion_value,
+         expectaion_value * 1000);
+  printf("Varianze:\t%.6fs\t%fms\t%fmicrosec.\n", variance, variance * 1000,
+         variance * 1000000);
+  //printf("Standardabweichung:\t%.6fs\t%fms\n", standard_deviation,
+  //       standard_deviation * 1000);
+}
+
+int main(int argc, char **args) {
+  struct timespec *results =
+      (struct timespec *)malloc(sizeof(struct timespec) * MEASURE * 2);
+  struct timespec start = gtod();
+  run_A(results);
+  struct timespec end = gtod();
+	printf("Alle Funktionen:\n");
+  evaluate(results, start, end);
   start = gtod();
-  run_F();
+  run_F(results);
   end = gtod();
-  diff_sec = end.tv_sec - start.tv_sec;
-  diff_nano_sec = end.tv_nsec - start.tv_nsec;
-  pres_diff = diff_sec + diff_nano_sec / 1000000000;
-  printf("Nur erste Funktion:\t%.6fs\t%fms\n", pres_diff, pres_diff * 1000);
+  printf("\nNur erste Funktion:");
+  evaluate(results, start, end);
+  free(results);
 }
