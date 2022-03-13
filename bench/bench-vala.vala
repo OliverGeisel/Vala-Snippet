@@ -191,11 +191,11 @@ void evaluate(int64* results, int64 start,int64 end){
     temp += Math.pow(temp_diff - expectaion_value, 2);
   }
   variance = temp / MEASURE;
- // double standard_deviation = Math.sqrt(variance);
+  double standard_deviation = Math.pow(variance,0.5);
 	print("Gesamte Zeit:\t%.8fs\t%fms\n",seconds, seconds*1000);
   	print("Durchschnittliche Zeit: %fs\t%fms\n",expectaion_value,expectaion_value*1000);
-	  print("Varianz: %f\n",variance);
-	  //print("Standardabweichung: %f\n",standard_deviation);
+	print("Varianz: %f\n",variance);
+	print("Standardabweichung: %f\n",standard_deviation);
 }
 
 int main(){
