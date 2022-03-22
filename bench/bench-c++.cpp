@@ -8,18 +8,18 @@
 #define WARMUP 10000
 #define MEASURE 1000000
 // Jede Methode Wirft und fängt die aufgerufene
-const int A_A(const int i);
-const int B_A(const int i);
-const int C_A(const int i);
-const int D_A(const int i);
-const int E_A(const int i);
+const int A_All(const int i);
+const int B_All(const int i);
+const int C_All(const int i);
+const int D_All(const int i);
+const int E_All(const int i);
 
 // Letzte Methode wirft, aber nur die erste fängt
-const int A_F(const int i);
-const int B_F(const int i);
-const int C_F(const int i);
-const int D_F(const int i);
-const int E_F(const int i);
+const int A_First(const int i);
+const int B_First(const int i);
+const int C_First(const int i);
+const int D_First(const int i);
+const int E_First(const int i);
 
 // Jede Methode wirft, und muss Objekte aufräumen
 const int A_C(const int i);
@@ -41,18 +41,18 @@ const int C_D(const int i);
 const int D_D(const int i);
 const int E_D(const int i);
 
-const int A_A(const int i) {
+const int A_All(const int i) {
   try {
-    B_A(i);
+    B_All(i);
   } catch (const std::exception &e) {
     // std::cerr << "Fehler gefangen in A\n";
   }
   return 0;
 }
 
-const int B_A(const int i) {
+const int B_All(const int i) {
   try {
-    C_A(i);
+    C_All(i);
   } catch (const std::exception &e) {
     // std::cerr << "Fehler gefangen in B\n";
     throw e;
@@ -60,9 +60,9 @@ const int B_A(const int i) {
   return 0;
 }
 
-const int C_A(const int i) {
+const int C_All(const int i) {
   try {
-    D_A(i);
+    D_All(i);
   } catch (const std::exception &e) {
     // std::cerr << "Fehler gefangen in C\n";
     throw e;
@@ -70,9 +70,9 @@ const int C_A(const int i) {
   return 0;
 }
 
-const int D_A(const int i) {
+const int D_All(const int i) {
   try {
-    E_A(i);
+    E_All(i);
   } catch (const std::exception &e) {
     // std::cerr << "Fehler gefangen in D\n";
     throw e;
@@ -80,19 +80,19 @@ const int D_A(const int i) {
   return 0;
 }
 
-const int E_A(const int i) {
+const int E_All(const int i) {
   // throw std::exception();
   return 0;
 }
 
-int run_A(std::chrono::high_resolution_clock::time_point *results) {
+int run_All(std::chrono::high_resolution_clock::time_point *results) {
   std::chrono::high_resolution_clock::time_point start, end;
   const int i = 1;
   // warm up
   int run;
   for (run = 0; run < WARMUP; ++run) {
     try {
-      A_A(i);
+      A_All(i);
     } catch (const std::exception &e) {
       // std::cerr << e.what() << '\n';
     }
@@ -101,7 +101,7 @@ int run_A(std::chrono::high_resolution_clock::time_point *results) {
   for (run = 0; run < MEASURE; ++run) {
     start = std::chrono::high_resolution_clock::now();
     try {
-      A_A(i);
+      A_All(i);
     } catch (const std::exception &e) {
       // std::cerr << e.what() << '\n';
     }
@@ -116,18 +116,21 @@ int run_A(std::chrono::high_resolution_clock::time_point *results) {
 
 class NichtFangen {};
 
-const int A_F(const int i) {
+const int A_First(const int i) {
   try {
-    B_F(i);
+    B_First(i);
   } catch (const std::exception &e) {
     // std::cerr << "Fehler gefangen in A\n";
+  }
+  catch(const NichtFangen &f){
+    std::cout << " Es gab einen anderen Fehler !\n";
   }
   return 0;
 }
 
-const int B_F(const int i) {
+const int B_First(const int i) {
   try {
-    C_F(i);
+    C_First(i);
   } catch (const NichtFangen &e) {
     std::cerr << "Fehler gefangen in B\n";
     throw e;
@@ -135,9 +138,9 @@ const int B_F(const int i) {
   return 0;
 }
 
-const int C_F(const int i) {
+const int C_First(const int i) {
   try {
-    D_F(i);
+    D_First(i);
   } catch (const NichtFangen &e) {
     std::cerr << "Fehler gefangen in C\n";
     throw e;
@@ -145,9 +148,9 @@ const int C_F(const int i) {
   return 0;
 }
 
-const int D_F(const int i) {
+const int D_First(const int i) {
   try {
-    E_F(i);
+    E_First(i);
   } catch (const NichtFangen &e) {
     std::cerr << "Fehler gefangen in D\n";
     throw e;
@@ -155,19 +158,19 @@ const int D_F(const int i) {
   return 0;
 }
 
-const int E_F(const int i) {
+const int E_First(const int i) {
   throw std::exception();
   return 0;
 }
 
-int run_F(std::chrono::high_resolution_clock::time_point *results) {
+int run_First(std::chrono::high_resolution_clock::time_point *results) {
   const int i = 1;
   std::chrono::high_resolution_clock::time_point start, end;
   // warm up
   int run;
   for (run = 0; run < WARMUP; ++run) {
     try {
-      A_F(i);
+      A_First(i);
     } catch (const std::exception &e) {
       // std::cerr << e.what() << '\n';
     }
@@ -178,7 +181,7 @@ int run_F(std::chrono::high_resolution_clock::time_point *results) {
   for (run = 0; run < MEASURE; ++run) {
     start = std::chrono::high_resolution_clock::now();
     try {
-      A_F(i);
+      A_First(i);
     } catch (const std::exception &e) {
       // std::cerr << e.what() << '\n';
     }
@@ -211,26 +214,27 @@ void evaluate(std::chrono::high_resolution_clock::time_point *results,
   double standard_deviation = std::sqrt(variance);
 
   // print section
-  std::cout << "Für " << MEASURE << " Läufe benötigte Zeit: " << diff.count()
-            << "s\n"
-            << "Durchschnittliche Zeit: " << expectaion_value << "s\t"
+  auto time = diff.count();
+  std::cout << "Gesamte Zeit:\t" << time
+            << "s\t" << time *1000 << "ms\n"
+            << "Durchschnittliche Zeit:\t" << expectaion_value << "s\t"
             << expectaion_value * 1000 << "ms\t" << expectaion_value * 1000000
             << "microsec.\n"
-            << "Varianz: " << variance
-            << "\tStandardabweichung: " << standard_deviation << std::endl;
+            << "Varianz:\t" << variance << "s\t"<<variance*1000 << "ms\t"<<variance*1000000<<"mikrosec.\n"
+            << "Standardabweichung:\t" << standard_deviation <<"s\t"<<standard_deviation*1000<<"ms"<< std::endl;
 }
 
 int main(int argc, char **args) {
   auto results = (std::chrono::high_resolution_clock::time_point *)malloc(
       sizeof(std::chrono::high_resolution_clock::time_point) * MEASURE * 2);
   auto start = std::chrono::high_resolution_clock::now();
-  run_A(results);
+  run_All(results);
   auto end = std::chrono::high_resolution_clock::now();
-  std::cout << "\nAlle Funktionen:\n";
+  std::cout << "Alle Funktionen:\n";
   evaluate(results, start, end);
 
   start = std::chrono::high_resolution_clock::now();
-  run_F(results);
+  run_First(results);
   end = std::chrono::high_resolution_clock::now();
   std::cout << "\nNur erste Funktion:\n";
   evaluate(results, start, end);
