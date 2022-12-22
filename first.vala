@@ -1,6 +1,6 @@
  
 
 void main(){
-	print("Hello World! This is Vala!");
+	print("Hello World! This is a Vala-Program!\n");
 }	
 

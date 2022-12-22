@@ -7,6 +7,8 @@ void printResult(MethodWithTwoInt func, int a , int b ){
 
 
 int main(string[] args){
+ 
+    print( => {return })
     printResult((first, second) => {return first * second + 1;} , 5 ,10); // 5*10+1 =51
     return 0;
 }

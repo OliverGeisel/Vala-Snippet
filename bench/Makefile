@@ -1,6 +1,12 @@
 .DEAFAULT_GOAL := build-normal
 
 
+build-native:
+	gcc -O3 -march=native -std=c11 -o test_c bench-c.c -lm
+	g++ -O3 -std=c++17 -march=native -o test_cpp bench-c++.cpp
+	valac -X -O3 --pkg=posix --pkg=glib-2.0 -X -march=native -o test_vala bench-vala.vala -X -lm
+
+
 build-normal:
 	gcc -O3 -std=c11 -o test_c bench-c.c -lm
 	g++ -O3 -std=c++17 -o test_cpp bench-c++.cpp
