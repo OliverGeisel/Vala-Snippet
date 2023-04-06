@@ -10,8 +10,10 @@ void main(){
 
 	// mit --enable-experimetal-non-null nicht möglich
 	int i;
-	int[] a = null;
-	normal_string = null;
+	int[] a = null; // Fehler
+	normal_string = null; // Fehler
+	// Nullable Typen sind aber erlaubt
+	int? nullable_string = null;
 	int new_i = j ?? 1;
 	print("%d\n", new_i);
 }

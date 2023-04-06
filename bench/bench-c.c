@@ -1,6 +1,6 @@
-#include <math.h>
 #include <bits/time.h>
 #include <bits/types/clockid_t.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -90,19 +90,19 @@ int run_All(struct timespec *results) {
 }
 
 const int A_First(const int i) {
-	int error= B_First(i);
-  if (error == BESONDERER_FEHLER){
-    //printf("Fehler gefangen in A\n");
+  int error = B_First(i);
+  if (error == BESONDERER_FEHLER) {
+    // printf("Fehler gefangen in A\n");
     return KEIN_FEHLER;
   }
-  if (error<0) {
+  if (error < 0) {
     printf("Es gab einen anderen Fehler!\n");
   }
   return 1;
 }
 
 const int B_First(const int i) {
-  if (C_First(i) <= FEHLER){
+  if (C_First(i) <= FEHLER) {
     printf("Fehler gefangen in B\n");
     return FEHLER;
   }
@@ -110,7 +110,7 @@ const int B_First(const int i) {
 }
 
 const int C_First(const int i) {
-  if (D_First(i) <= FEHLER){
+  if (D_First(i) <= FEHLER) {
     printf("Fehler gefangen in C\n");
     return FEHLER;
   }
@@ -118,7 +118,7 @@ const int C_First(const int i) {
 }
 
 const int D_First(const int i) {
-  if (E_First(i) <= FEHLER){
+  if (E_First(i) <= FEHLER) {
     printf("Fehler gefangen in D\n");
     return FEHLER;
   }
@@ -198,7 +198,7 @@ int main(int argc, char **args) {
   struct timespec start = gtod();
   run_All(results);
   struct timespec end = gtod();
-	printf("Alle Funktionen:\n");
+  printf("Alle Funktionen:\n");
   evaluate(results, start, end);
   start = gtod();
   run_First(results);
