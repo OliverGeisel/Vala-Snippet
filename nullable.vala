@@ -2,18 +2,17 @@ using GLib;
 
 void main(){
 	string s = "Hallo";
-	string? null_string = null;
-	string normal_string;
+	string? nullString = null;
+	string normalString;
 	int? j = null;
 	int[]? b = null;
 
-
 	// mit --enable-experimetal-non-null nicht möglich
-	int i;
 	int[] a = null; // Fehler
-	normal_string = null; // Fehler
+	normalString = null; // Fehler
+
 	// Nullable Typen sind aber erlaubt
-	int? nullable_string = null;
+	int? nullableInt = null;
 	int new_i = j ?? 1;
 	print("%d\n", new_i);
 }
