@@ -3,7 +3,7 @@ using GLib;
 class BasisKlasse : GLib.Object {
 	private int _alter;
 
-	public int alter{
+	public int alter {
 		public get{ return _alter;}
 	}
 
@@ -38,6 +38,6 @@ int main(){
 	e.foo();
 	BasisKlasse new_b = e;
 	new_b.foo();
-	print( "Alter von e=%d\n",e.alter);
+	print( "Alter von e=%d\n",e.alter );
 	return 0;
 }

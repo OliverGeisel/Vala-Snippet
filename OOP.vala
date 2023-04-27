@@ -1,10 +1,10 @@
 using GLib;
 
 class BasisKlasse {
-	private int alter=2;
+	private int alter = 2;
 
 	public void foo(){
-		print("Hallo\n");
+		print( "Hallo\n" );
 	}
 
 	public int getAlter(){
@@ -15,7 +15,7 @@ class BasisKlasse {
 class ErbendeKlasse :  BasisKlasse {
 
 	public void foo(){
-		print("Welt!\n");
+		print( "Welt!\n" );
 	}
 
 }
@@ -28,6 +28,6 @@ int main(){
 	e.foo();
 	BasisKlasse new_b = e;
 	new_b.foo();
-	print("Alter von e=%d\n",e.getAlter());
+	print( "Alter von e=%d\n",e.getAlter());
 	return 0;
 }

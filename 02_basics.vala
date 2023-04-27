@@ -39,8 +39,6 @@ int main(){
 }
 
 class Test {
-
-
 	private int foo(int i){
 		return i;
 	}
@@ -49,6 +47,5 @@ class Test {
 		return --i;
 
 	}
-
 
 }

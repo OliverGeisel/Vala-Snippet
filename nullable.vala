@@ -14,5 +14,5 @@ void main(){
 	// Nullable Typen sind aber erlaubt
 	int? nullableInt = null;
 	int new_i = j ?? 1;
-	print("%d\n", new_i);
+	print( "%d\n", new_i );
 }

@@ -11,6 +11,7 @@ errordomain MathErrors{
     PI_IS_3,
     NOT_A_NUMBER
 }
+
 void openFile() throws JavaErrors.NullPointerException{
     // Force Null
     Object? f1 = null;
