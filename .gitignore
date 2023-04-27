@@ -3,3 +3,5 @@
 /outputs
 *.out
 /bench/test*
+
+**.exe
