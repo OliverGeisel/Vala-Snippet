@@ -5,8 +5,8 @@
 #include <iostream>
 #include <math.h>
 
-#define WARMUP 10000
-#define MEASURE 1000000
+constexpr int WARMUP = 10'000;
+constexpr long MEASURE = 10'000'000;
 // Jede Methode Wirft und fängt die aufgerufene
 const int A_All(const int i);
 const int B_All(const int i);
@@ -41,68 +41,94 @@ const int C_D(const int i);
 const int D_D(const int i);
 const int E_D(const int i);
 
-const int A_All(const int i) {
-  try {
+const int A_All(const int i)
+{
+  try
+  {
     B_All(i);
-  } catch (const std::exception &e) {
+  }
+  catch (const std::exception &e)
+  {
     // std::cerr << "Fehler gefangen in A\n";
   }
   return 0;
 }
 
-const int B_All(const int i) {
-  try {
+const int B_All(const int i)
+{
+  try
+  {
     C_All(i);
-  } catch (const std::exception &e) {
+  }
+  catch (const std::exception &e)
+  {
     // std::cerr << "Fehler gefangen in B\n";
     throw e;
   }
   return 0;
 }
 
-const int C_All(const int i) {
-  try {
+const int C_All(const int i)
+{
+  try
+  {
     D_All(i);
-  } catch (const std::exception &e) {
+  }
+  catch (const std::exception &e)
+  {
     // std::cerr << "Fehler gefangen in C\n";
     throw e;
   }
   return 0;
 }
 
-const int D_All(const int i) {
-  try {
+const int D_All(const int i)
+{
+  try
+  {
     E_All(i);
-  } catch (const std::exception &e) {
+  }
+  catch (const std::exception &e)
+  {
     // std::cerr << "Fehler gefangen in D\n";
     throw e;
   }
   return 0;
 }
 
-const int E_All(const int i) {
+const int E_All(const int i)
+{
   // throw std::exception();
   return 0;
 }
 
-int run_All(std::chrono::high_resolution_clock::time_point *results) {
+int run_All(std::chrono::high_resolution_clock::time_point *results)
+{
   std::chrono::high_resolution_clock::time_point start, end;
   const int i = 1;
   // warm up
   int run;
-  for (run = 0; run < WARMUP; ++run) {
-    try {
+  for (run = 0; run < WARMUP; ++run)
+  {
+    try
+    {
       A_All(i);
-    } catch (const std::exception &e) {
+    }
+    catch (const std::exception &e)
+    {
       // std::cerr << e.what() << '\n';
     }
   }
   // REAL run
-  for (run = 0; run < MEASURE; ++run) {
+  for (run = 0; run < MEASURE; ++run)
+  {
     start = std::chrono::high_resolution_clock::now();
-    try {
+    try
+    {
       A_All(i);
-    } catch (const std::exception &e) {
+    }
+    catch (const std::exception &e)
+    {
       // std::cerr << e.what() << '\n';
     }
     end = std::chrono::high_resolution_clock::now();
@@ -112,77 +138,102 @@ int run_All(std::chrono::high_resolution_clock::time_point *results) {
   return 0;
 }
 
-// --------------------------------------------------------
+// ----------------------------------------------------------------------
 
-class NichtFangen {};
+class NichtFangen : std::exception
+{
+};
 
-const int A_First(const int i) {
-  try {
+const int A_First(const int i)
+{
+  try
+  {
     B_First(i);
-  } catch (const std::exception &e) {
+  }
+  catch (const std::exception &e)
+  {
     // std::cerr << "Fehler gefangen in A\n";
   }
-  catch(const NichtFangen &f){
+  catch (const NichtFangen &f)
+  {
     std::cout << " Es gab einen anderen Fehler !\n";
   }
   return 0;
 }
 
-const int B_First(const int i) {
-  try {
+const int B_First(const int i)
+{
+  try
+  {
     C_First(i);
-  } catch (const NichtFangen &e) {
+  }
+  catch (const NichtFangen &e)
+  {
     std::cerr << "Fehler gefangen in B\n";
     throw e;
   }
   return 0;
 }
 
-const int C_First(const int i) {
-  try {
+const int C_First(const int i)
+{
+  try
+  {
     D_First(i);
-  } catch (const NichtFangen &e) {
+  }
+  catch (const NichtFangen &e)
+  {
     std::cerr << "Fehler gefangen in C\n";
     throw e;
   }
   return 0;
 }
 
-const int D_First(const int i) {
-  try {
+const int D_First(const int i)
+{
+  try
+  {
     E_First(i);
-  } catch (const NichtFangen &e) {
+  }
+  catch (const NichtFangen &e)
+  {
     std::cerr << "Fehler gefangen in D\n";
     throw e;
   }
   return 0;
 }
 
-const int E_First(const int i) {
+const int E_First(const int i)
+{
   throw std::exception();
   return 0;
 }
 
-int run_First(std::chrono::high_resolution_clock::time_point *results) {
+int run_First(std::chrono::high_resolution_clock::time_point *results){
   const int i = 1;
   std::chrono::high_resolution_clock::time_point start, end;
   // warm up
   int run;
-  for (run = 0; run < WARMUP; ++run) {
-    try {
+  for (run = 0; run < WARMUP; ++run)
+  {
+    try
+    {
       A_First(i);
-    } catch (const std::exception &e) {
+    }
+    catch (const std::exception &e)
+    {
       // std::cerr << e.what() << '\n';
     }
   }
 
   // REAL run
 
-  for (run = 0; run < MEASURE; ++run) {
+  for (run = 0; run < MEASURE; ++run){
     start = std::chrono::high_resolution_clock::now();
-    try {
+    try{
       A_First(i);
-    } catch (const std::exception &e) {
+    }
+    catch (const std::exception &e){
       // std::cerr << e.what() << '\n';
     }
     end = std::chrono::high_resolution_clock::now();
@@ -194,19 +245,20 @@ int run_First(std::chrono::high_resolution_clock::time_point *results) {
 
 void evaluate(std::chrono::high_resolution_clock::time_point *results,
               std::chrono::high_resolution_clock::time_point start,
-              std::chrono::high_resolution_clock::time_point end) {
+              std::chrono::high_resolution_clock::time_point end)
+{
   std::chrono::duration<double> diff = end - start;
   double sum = 0.0;
   double expectaion_value;
   std::chrono::duration<double> temp_diff;
-  for (int i = 0; i < MEASURE; ++i) {
+  for (int i = 0; i < MEASURE; ++i){
     temp_diff = results[i * 2 + 1] - results[i * 2];
     sum += temp_diff.count();
   }
   double variance;
   expectaion_value = sum / MEASURE;
   double temp = 0;
-  for (int i = 0; i < MEASURE; ++i) {
+  for (int i = 0; i < MEASURE; ++i){
     temp_diff = results[i * 2 + 1] - results[i * 2];
     temp += std::pow(temp_diff.count() - expectaion_value, 2);
   }
@@ -215,16 +267,16 @@ void evaluate(std::chrono::high_resolution_clock::time_point *results,
 
   // print section
   auto time = diff.count();
-  std::cout << "Gesamte Zeit:\t" << time
-            << "s\t" << time *1000 << "ms\n"
-            << "Durchschnittliche Zeit:\t" << expectaion_value << "s\t"
-            << expectaion_value * 1000 << "ms\t" << expectaion_value * 1000000
-            << "microsec.\n"
-            << "Varianz:\t" << variance << "s\t"<<variance*1000 << "ms\t"<<variance*1000000<<"mikrosec.\n"
-            << "Standardabweichung:\t" << standard_deviation <<"s\t"<<standard_deviation*1000<<"ms"<< std::endl;
+  std::cout << "Gesamte Zeit:\t\t" << time
+            << "s\t" << time * 1000 << " ms\n"
+            << "Durchschnittliche Zeit:\t" << expectaion_value << " s\t"
+            << expectaion_value * 1000 << " ms\t" << expectaion_value * 1000000
+            << " mikrosec.\n"
+            << "Varianz:\t\t" << variance << " s\t" << variance * 1000 << " ms\t" << variance * 1000000 << " mikrosec.\n"
+            << "Standardabweichung:\t" << standard_deviation << " s\t" << standard_deviation * 1000 << " ms" << std::endl;
 }
 
-int main(int argc, char **args) {
+int main(int argc, char **args){
   auto results = (std::chrono::high_resolution_clock::time_point *)malloc(
       sizeof(std::chrono::high_resolution_clock::time_point) * MEASURE * 2);
   auto start = std::chrono::high_resolution_clock::now();

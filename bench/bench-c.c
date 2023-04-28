@@ -10,7 +10,7 @@
 #define KEIN_FEHLER 1
 
 #define WARMUP 10000
-#define MEASURE 1000000
+#define MEASURE 10000000
 
 const int A_All(const int i);
 const int B_All(const int i);
@@ -38,40 +38,41 @@ const int E_D(const int i);
 
 static inline struct timespec gtod();
 
-const int A_All(const int i) {
+ int A_All(const int i) {
   if (B_All(i) <= FEHLER)
-    return FEHLER;
+    return FEHLER-i;
   return 0;
 }
 
-const int B_All(const int i) {
+ int B_All(const int i) {
   if (C_All(i) <= FEHLER)
-    return FEHLER;
+    return FEHLER-i;
   return 0;
 }
 
-const int C_All(const int i) {
+ int C_All(const int i) {
   if (D_All(i) <= FEHLER)
-    return FEHLER;
+    return FEHLER-i;
   return 0;
 }
 
-const int D_All(const int i) {
+ int D_All(const int i) {
   if (E_All(i) <= FEHLER)
-    return FEHLER;
+    return FEHLER-i;
   return 0;
 }
 
-const int E_All(const int i) { return FEHLER; }
+ int E_All(const int i) { return FEHLER; }
 
 int run_All(struct timespec *results) {
-  const int i = 1;
+  srand(time(NULL));
+  const int i = rand()%2;
   struct timespec start, end;
 
   // warm up
   int run;
   for (run = 0; run < WARMUP; ++run) {
-    if (A_All(i) < FEHLER) {
+    if (A_All(i) < FEHLER-1) {
       perror("There was an error!\n");
     }
   }
@@ -79,7 +80,8 @@ int run_All(struct timespec *results) {
   // REAL run
   for (run = 0; run < MEASURE; ++run) {
     start = gtod();
-    if (A_All(i) < FEHLER) {
+    int error = A_All(i); 
+    if (error < FEHLER-1) {
       perror("There was an error!\n");
     }
     end = gtod();
@@ -89,7 +91,10 @@ int run_All(struct timespec *results) {
   return 0;
 }
 
+// ---------------------------------------------------------------------------------------------
+
 const int A_First(const int i) {
+   void* pointer = malloc(2);
   int error = B_First(i);
   if (error == BESONDERER_FEHLER) {
     // printf("Fehler gefangen in A\n");
@@ -97,44 +102,55 @@ const int A_First(const int i) {
   }
   if (error < 0) {
     printf("Es gab einen anderen Fehler!\n");
-  }
+  }  
+  free(pointer);
   return 1;
 }
 
-const int B_First(const int i) {
+const int B_First(const int i) { 
+  void* pointer = malloc(2);
   if (C_First(i) <= FEHLER) {
     printf("Fehler gefangen in B\n");
-    return FEHLER;
+    return FEHLER-i;
   }
+  free(pointer);
   return 0;
 }
 
 const int C_First(const int i) {
+   void* pointer = malloc(2);
   if (D_First(i) <= FEHLER) {
     printf("Fehler gefangen in C\n");
-    return FEHLER;
-  }
+    return FEHLER-i;
+  }  
+  free(pointer);
   return 0;
 }
 
 const int D_First(const int i) {
+  void* pointer = malloc(2);
   if (E_First(i) <= FEHLER) {
     printf("Fehler gefangen in D\n");
-    return FEHLER;
+    return FEHLER-i;
   }
+  free(pointer);
   return 0;
 }
 
-const int E_First(const int i) { return BESONDERER_FEHLER; }
+const int E_First(const int i) { 
+  void* pointer = malloc(2);
+  free(pointer);
+return BESONDERER_FEHLER; }
 
 int run_First(struct timespec *results) {
-  const int i = 1;
+  srand(time(NULL));
+  const int i = rand()%2;
   struct timespec start, end;
 
   // warm up
   int run;
   for (run = 0; run < WARMUP; ++run) {
-    if (A_First(i) < FEHLER) {
+    if (A_First(i) < FEHLER-1) {
       perror("There was an error!\n");
     }
   }
@@ -142,7 +158,7 @@ int run_First(struct timespec *results) {
   // REAL run
   for (run = 0; run < MEASURE; ++run) {
     start = gtod();
-    if (A_First(i) < FEHLER) {
+    if (A_First(i) < FEHLER-1) {
       perror("There was an error!\n");
     }
     end = gtod();
@@ -151,6 +167,8 @@ int run_First(struct timespec *results) {
   }
   return 0;
 }
+
+// ---------------------------------------------------------------------------------------------
 
 static inline struct timespec gtod() {
   struct timespec back;
@@ -183,10 +201,10 @@ void evaluate(struct timespec *results, struct timespec start,
   }
   variance = temp / MEASURE;
   double standard_deviation = sqrt(variance);
-  printf("Gesamte Zeit:\t%.8fs\t%fms\n", pres_diff, pres_diff * 1000);
-  printf("Durchschnittliche Zeit:\t%.6fs\t%fms\t%fmikrosec.\n",
+  printf("Gesamte Zeit:\t\t%.8f s\t%f ms\n", pres_diff, pres_diff * 1000);
+  printf("Durchschnittliche Zeit:\t%.6f s\t%fms\t%f mikrosec.\n",
          expectaion_value, expectaion_value * 1000, expectaion_value * 1000000);
-  printf("Varianze:\t%.6fs\t%fms\t%fmikrosec.\n", variance, variance * 1000,
+  printf("Varianze:\t\t%.6f s\t%f ms\t%f mikrosec.\n", variance, variance * 1000,
          variance * 1000000);
   printf("Standardabweichung:\t%.6fs\t%fms\n", standard_deviation,
          standard_deviation * 1000);
