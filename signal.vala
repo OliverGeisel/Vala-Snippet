@@ -21,5 +21,4 @@ void main(){
 	print( "Eventhandler wurde dem Event zugewiesen!\n" );
 	e.mein_event( 5,"Hallo" );
 
-
 }
