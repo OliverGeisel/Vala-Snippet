@@ -12,198 +12,202 @@
 #define WARMUP 10000
 #define MEASURE 1000000
 
-const int A_All(const int i);
-const int B_All(const int i);
-const int C_All(const int i);
-const int D_All(const int i);
-const int E_All(const int i);
+const int A_All( const int i );
+const int B_All( const int i );
+const int C_All( const int i );
+const int D_All( const int i );
+const int E_All( const int i );
 
-const int A_First(const int i);
-const int B_First(const int i);
-const int C_First(const int i);
-const int D_First(const int i);
-const int E_First(const int i);
+const int A_First( const int i );
+const int B_First( const int i );
+const int C_First( const int i );
+const int D_First( const int i );
+const int E_First( const int i );
 
-const int A_C(const int i);
-const int B_C(const int i);
-const int C_C(const int i);
-const int D_C(const int i);
-const int E_C(const int i);
+const int A_C( const int i );
+const int B_C( const int i );
+const int C_C( const int i );
+const int D_C( const int i );
+const int E_C( const int i );
 
-const int A_D(const int i);
-const int B_D(const int i);
-const int C_D(const int i);
-const int D_D(const int i);
-const int E_D(const int i);
+const int A_D( const int i );
+const int B_D( const int i );
+const int C_D( const int i );
+const int D_D( const int i );
+const int E_D( const int i );
 
 static inline struct timespec gtod();
 
-const int A_All(const int i) {
-  if (B_All(i) <= FEHLER)
-    return FEHLER;
-  return 0;
+const int A_All( const int i ) {
+	if (B_All( i ) <= FEHLER)
+		return FEHLER;
+	return 0;
 }
 
-const int B_All(const int i) {
-  if (C_All(i) <= FEHLER)
-    return FEHLER;
-  return 0;
+const int B_All( const int i ) {
+	if (C_All( i ) <= FEHLER)
+		return FEHLER;
+	return 0;
 }
 
-const int C_All(const int i) {
-  if (D_All(i) <= FEHLER)
-    return FEHLER;
-  return 0;
+const int C_All( const int i ) {
+	if (D_All( i ) <= FEHLER)
+		return FEHLER;
+	return 0;
 }
 
-const int D_All(const int i) {
-  if (E_All(i) <= FEHLER)
-    return FEHLER;
-  return 0;
+const int D_All( const int i ) {
+	if (E_All( i ) <= FEHLER)
+		return FEHLER;
+	return 0;
 }
 
-const int E_All(const int i) { return FEHLER; }
-
-int run_All(struct timespec *results) {
-  const int i = 1;
-  struct timespec start, end;
-
-  // warm up
-  int run;
-  for (run = 0; run < WARMUP; ++run) {
-    if (A_All(i) < FEHLER) {
-      perror("There was an error!\n");
-    }
-  }
-
-  // REAL run
-  for (run = 0; run < MEASURE; ++run) {
-    start = gtod();
-    if (A_All(i) < FEHLER) {
-      perror("There was an error!\n");
-    }
-    end = gtod();
-    results[run * 2] = start;
-    results[run * 2 + 1] = end;
-  }
-  return 0;
+const int E_All( const int i ) {
+	return FEHLER;
 }
 
-const int A_First(const int i) {
-  int error = B_First(i);
-  if (error == BESONDERER_FEHLER) {
-    // printf("Fehler gefangen in A\n");
-    return KEIN_FEHLER;
-  }
-  if (error < 0) {
-    printf("Es gab einen anderen Fehler!\n");
-  }
-  return 1;
+int run_All( struct timespec *results ) {
+	const int i = 1;
+	struct timespec start, end;
+
+	// warm up
+	int run;
+	for (run = 0; run < WARMUP; ++run) {
+		if (A_All( i ) < FEHLER) {
+			perror( "There was an error!\n" );
+		}
+	}
+
+	// REAL run
+	for (run = 0; run < MEASURE; ++run) {
+		start = gtod();
+		if (A_All( i ) < FEHLER) {
+			perror( "There was an error!\n" );
+		}
+		end = gtod();
+		results[run * 2] = start;
+		results[run * 2 + 1] = end;
+	}
+	return 0;
 }
 
-const int B_First(const int i) {
-  if (C_First(i) <= FEHLER) {
-    printf("Fehler gefangen in B\n");
-    return FEHLER;
-  }
-  return 0;
+const int A_First( const int i ) {
+	int error = B_First( i );
+	if (error == BESONDERER_FEHLER) {
+		// printf("Fehler gefangen in A\n");
+		return KEIN_FEHLER;
+	}
+	if (error < 0) {
+		printf( "Es gab einen anderen Fehler!\n" );
+	}
+	return 1;
 }
 
-const int C_First(const int i) {
-  if (D_First(i) <= FEHLER) {
-    printf("Fehler gefangen in C\n");
-    return FEHLER;
-  }
-  return 0;
+const int B_First( const int i ) {
+	if (C_First( i ) <= FEHLER) {
+		printf( "Fehler gefangen in B\n" );
+		return FEHLER;
+	}
+	return 0;
 }
 
-const int D_First(const int i) {
-  if (E_First(i) <= FEHLER) {
-    printf("Fehler gefangen in D\n");
-    return FEHLER;
-  }
-  return 0;
+const int C_First( const int i ) {
+	if (D_First( i ) <= FEHLER) {
+		printf( "Fehler gefangen in C\n" );
+		return FEHLER;
+	}
+	return 0;
 }
 
-const int E_First(const int i) { return BESONDERER_FEHLER; }
+const int D_First( const int i ) {
+	if (E_First( i ) <= FEHLER) {
+		printf( "Fehler gefangen in D\n" );
+		return FEHLER;
+	}
+	return 0;
+}
 
-int run_First(struct timespec *results) {
-  const int i = 1;
-  struct timespec start, end;
+const int E_First( const int i ) {
+	return BESONDERER_FEHLER;
+}
 
-  // warm up
-  int run;
-  for (run = 0; run < WARMUP; ++run) {
-    if (A_First(i) < FEHLER) {
-      perror("There was an error!\n");
-    }
-  }
+int run_First( struct timespec *results ) {
+	const int i = 1;
+	struct timespec start, end;
 
-  // REAL run
-  for (run = 0; run < MEASURE; ++run) {
-    start = gtod();
-    if (A_First(i) < FEHLER) {
-      perror("There was an error!\n");
-    }
-    end = gtod();
-    results[run * 2] = start;
-    results[run * 2 + 1] = end;
-  }
-  return 0;
+	// warm up
+	int run;
+	for (run = 0; run < WARMUP; ++run) {
+		if (A_First( i ) < FEHLER) {
+			perror( "There was an error!\n" );
+		}
+	}
+
+	// REAL run
+	for (run = 0; run < MEASURE; ++run) {
+		start = gtod();
+		if (A_First( i ) < FEHLER) {
+			perror( "There was an error!\n" );
+		}
+		end = gtod();
+		results[run * 2] = start;
+		results[run * 2 + 1] = end;
+	}
+	return 0;
 }
 
 static inline struct timespec gtod() {
-  struct timespec back;
-  int clock = clock_gettime(0, &back);
-  return back;
+	struct timespec back;
+	int clock = clock_gettime( 0, &back );
+	return back;
 }
 
-void evaluate(struct timespec *results, struct timespec start,
-              struct timespec end) {
-  double diff_sec = end.tv_sec - start.tv_sec;
-  double diff_nano_sec = end.tv_nsec - start.tv_nsec;
-  double pres_diff = diff_sec + diff_nano_sec / 1000000000;
+void evaluate( struct timespec *results, struct timespec start,
+               struct timespec end ) {
+	double diff_sec = end.tv_sec - start.tv_sec;
+	double diff_nano_sec = end.tv_nsec - start.tv_nsec;
+	double pres_diff = diff_sec + diff_nano_sec / 1000000000;
 
-  double sum = 0.0;
-  double expectaion_value;
-  for (int i = 0; i < MEASURE; ++i) {
-    double diff_sec = results[i * 2 + 1].tv_sec - results[i * 2].tv_sec;
-    double diff_nano_sec = results[i * 2 + 1].tv_nsec - results[i * 2].tv_nsec;
-    double pres_diff = diff_sec + diff_nano_sec / 1000000000;
-    sum += pres_diff;
-  }
-  double variance;
-  expectaion_value = sum / MEASURE;
-  double temp = 0;
-  for (int i = 0; i < MEASURE; ++i) {
-    double diff_sec = results[i * 2 + 1].tv_sec - results[i * 2].tv_sec;
-    double diff_nano_sec = results[i * 2 + 1].tv_nsec - results[i * 2].tv_nsec;
-    double pres_diff = diff_sec + diff_nano_sec / 1000000000;
-    temp += pow(pres_diff - expectaion_value, 2);
-  }
-  variance = temp / MEASURE;
-  double standard_deviation = sqrt(variance);
-  printf("Gesamte Zeit:\t%.8fs\t%fms\n", pres_diff, pres_diff * 1000);
-  printf("Durchschnittliche Zeit:\t%.6fs\t%fms\t%fmikrosec.\n",
-         expectaion_value, expectaion_value * 1000, expectaion_value * 1000000);
-  printf("Varianze:\t%.6fs\t%fms\t%fmikrosec.\n", variance, variance * 1000,
-         variance * 1000000);
-  printf("Standardabweichung:\t%.6fs\t%fms\n", standard_deviation,
-         standard_deviation * 1000);
+	double sum = 0.0;
+	double expectaion_value;
+	for (int i = 0; i < MEASURE; ++i) {
+		double diff_sec = results[i * 2 + 1].tv_sec - results[i * 2].tv_sec;
+		double diff_nano_sec = results[i * 2 + 1].tv_nsec - results[i * 2].tv_nsec;
+		double pres_diff = diff_sec + diff_nano_sec / 1000000000;
+		sum += pres_diff;
+	}
+	double variance;
+	expectaion_value = sum / MEASURE;
+	double temp = 0;
+	for (int i = 0; i < MEASURE; ++i) {
+		double diff_sec = results[i * 2 + 1].tv_sec - results[i * 2].tv_sec;
+		double diff_nano_sec = results[i * 2 + 1].tv_nsec - results[i * 2].tv_nsec;
+		double pres_diff = diff_sec + diff_nano_sec / 1000000000;
+		temp += pow( pres_diff - expectaion_value, 2 );
+	}
+	variance = temp / MEASURE;
+	double standard_deviation = sqrt( variance );
+	printf( "Gesamte Zeit:\t%.8fs\t%fms\n", pres_diff, pres_diff * 1000 );
+	printf( "Durchschnittliche Zeit:\t%.6fs\t%fms\t%fmikrosec.\n",
+	        expectaion_value, expectaion_value * 1000, expectaion_value * 1000000 );
+	printf( "Varianze:\t%.6fs\t%fms\t%fmikrosec.\n", variance, variance * 1000,
+	        variance * 1000000 );
+	printf( "Standardabweichung:\t%.6fs\t%fms\n", standard_deviation,
+	        standard_deviation * 1000 );
 }
 
-int main(int argc, char **args) {
-  struct timespec *results =
-      (struct timespec *)malloc(sizeof(struct timespec) * MEASURE * 2);
-  struct timespec start = gtod();
-  run_All(results);
-  struct timespec end = gtod();
-  printf("Alle Funktionen:\n");
-  evaluate(results, start, end);
-  start = gtod();
-  run_First(results);
-  end = gtod();
-  printf("\nNur erste Funktion:\n");
-  evaluate(results, start, end);
-  free(results);
+int main( int argc, char **args ) {
+	struct timespec *results =
+		(struct timespec *)malloc( sizeof( struct timespec ) * MEASURE * 2 );
+	struct timespec start = gtod();
+	run_All( results );
+	struct timespec end = gtod();
+	printf( "Alle Funktionen:\n" );
+	evaluate( results, start, end );
+	start = gtod();
+	run_First( results );
+	end = gtod();
+	printf( "\nNur erste Funktion:\n" );
+	evaluate( results, start, end );
+	free( results );
 }

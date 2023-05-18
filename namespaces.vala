@@ -7,19 +7,19 @@ void foo(){
 	print( "Im aeusseren Namespace!\n" );
 }
 
-    private void bar(){
-        print("Dies ist nur innerhalb des Namespaces verfuegbar\n");
-    }
+private void bar(){
+    print("Dies ist nur innerhalb des Namespaces verfuegbar\n");
+}
 
 private int antwort_auf_alles = 42;
 
 
-namespace EinNameSpaceInEinemNamespace {
-void foo(){
-	print( "Im inneren Namespace!\n" );
-}
+	namespace EinNameSpaceInEinemNamespace {
+		void foo(){
+			print( "Im inneren Namespace!\n" );
+		}
 
-        void privater_namespace_aufruf(){
+    	void privater_namespace_aufruf(){
             MeinNameSpace.bar();
         }
     }
@@ -44,5 +44,5 @@ void main(){
     MeinNameSpace.bar();
     MeinNameSpace.EinNameSpaceInEinemNamespace.privater_namespace_aufruf();
     int antwort = MeinNameSpace.antwort_auf_alles;
-
+	print("%d\n",antwort);
 }
