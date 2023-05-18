@@ -10,7 +10,7 @@
 #define KEIN_FEHLER 1
 
 #define WARMUP 10000
-#define MEASURE 1000000
+#define MEASURE 10000000
 
 const int A_All( const int i );
 const int B_All( const int i );
@@ -66,95 +66,111 @@ const int E_All( const int i ) {
 	return FEHLER;
 }
 
-int run_All( struct timespec *results ) {
-	const int i = 1;
-	struct timespec start, end;
+int run_All(struct timespec *results) {
+  srand(time(NULL));
+  const int i = rand()%2;
+  struct timespec start, end;
 
-	// warm up
-	int run;
-	for (run = 0; run < WARMUP; ++run) {
-		if (A_All( i ) < FEHLER) {
-			perror( "There was an error!\n" );
-		}
-	}
+  // warm up
+  int run;
+  for (run = 0; run < WARMUP; ++run) {
+    if (A_All(i) < FEHLER-1) {
+      perror("There was an error!\n");
+    }
+  }
 
-	// REAL run
-	for (run = 0; run < MEASURE; ++run) {
-		start = gtod();
-		if (A_All( i ) < FEHLER) {
-			perror( "There was an error!\n" );
-		}
-		end = gtod();
-		results[run * 2] = start;
-		results[run * 2 + 1] = end;
-	}
-	return 0;
+  // REAL run
+  for (run = 0; run < MEASURE; ++run) {
+    start = gtod();
+    int error = A_All(i);
+    if (error < FEHLER-1) {
+      perror("There was an error!\n");
+    }
+    end = gtod();
+    results[run * 2] = start;
+    results[run * 2 + 1] = end;
+  }
+  return 0;
 }
 
-const int A_First( const int i ) {
-	int error = B_First( i );
-	if (error == BESONDERER_FEHLER) {
-		// printf("Fehler gefangen in A\n");
-		return KEIN_FEHLER;
-	}
-	if (error < 0) {
-		printf( "Es gab einen anderen Fehler!\n" );
-	}
-	return 1;
+// ---------------------------------------------------------------------------------------------
+
+const int A_First(const int i) {
+   void* pointer = malloc(2);
+  int error = B_First(i);
+  if (error == BESONDERER_FEHLER) {
+    // printf("Fehler gefangen in A\n");
+    return KEIN_FEHLER;
+  }
+  if (error < 0) {
+    printf("Es gab einen anderen Fehler!\n");
+  }
+  free(pointer);
+  return 1;
 }
 
-const int B_First( const int i ) {
-	if (C_First( i ) <= FEHLER) {
-		printf( "Fehler gefangen in B\n" );
-		return FEHLER;
-	}
-	return 0;
+const int B_First(const int i) {
+  void* pointer = malloc(2);
+  if (C_First(i) <= FEHLER) {
+    printf("Fehler gefangen in B\n");
+    return FEHLER-i;
+  }
+  free(pointer);
+  return 0;
 }
 
-const int C_First( const int i ) {
-	if (D_First( i ) <= FEHLER) {
-		printf( "Fehler gefangen in C\n" );
-		return FEHLER;
-	}
-	return 0;
+const int C_First(const int i) {
+   void* pointer = malloc(2);
+  if (D_First(i) <= FEHLER) {
+    printf("Fehler gefangen in C\n");
+    return FEHLER-i;
+  }
+  free(pointer);
+  return 0;
 }
 
-const int D_First( const int i ) {
-	if (E_First( i ) <= FEHLER) {
-		printf( "Fehler gefangen in D\n" );
-		return FEHLER;
-	}
-	return 0;
+const int D_First(const int i) {
+  void* pointer = malloc(2);
+  if (E_First(i) <= FEHLER) {
+    printf("Fehler gefangen in D\n");
+    return FEHLER-i;
+  }
+  free(pointer);
+  return 0;
 }
 
-const int E_First( const int i ) {
-	return BESONDERER_FEHLER;
+const int E_First(const int i) {
+  void* pointer = malloc(2);
+  free(pointer);
+return BESONDERER_FEHLER; }
+
+int run_First(struct timespec *results) {
+  srand(time(NULL));
+  const int i = rand()%2;
+  struct timespec start, end;
+
+  // warm up
+  int run;
+  for (run = 0; run < WARMUP; ++run) {
+    if (A_First(i) < FEHLER-1) {
+      perror("There was an error!\n");
+    }
+  }
+
+  // REAL run
+  for (run = 0; run < MEASURE; ++run) {
+    start = gtod();
+    if (A_First(i) < FEHLER-1) {
+      perror("There was an error!\n");
+    }
+    end = gtod();
+    results[run * 2] = start;
+    results[run * 2 + 1] = end;
+  }
+  return 0;
 }
 
-int run_First( struct timespec *results ) {
-	const int i = 1;
-	struct timespec start, end;
-
-	// warm up
-	int run;
-	for (run = 0; run < WARMUP; ++run) {
-		if (A_First( i ) < FEHLER) {
-			perror( "There was an error!\n" );
-		}
-	}
-
-	// REAL run
-	for (run = 0; run < MEASURE; ++run) {
-		start = gtod();
-		if (A_First( i ) < FEHLER) {
-			perror( "There was an error!\n" );
-		}
-		end = gtod();
-		results[run * 2] = start;
-		results[run * 2 + 1] = end;
-	}
-	return 0;
-}
+// ---------------------------------------------------------------------------------------------
 
 static inline struct timespec gtod() {
 	struct timespec back;

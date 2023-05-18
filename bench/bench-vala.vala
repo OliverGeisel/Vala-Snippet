@@ -5,7 +5,7 @@ errordomain BenchErrors{
 	SpeziellerError
 }
 
-const int MEASURE = 1000000;
+const long MEASURE = 10000000;
 const int WARMUP = 10000;
 
 
@@ -89,14 +89,13 @@ int run_All(int64* results){
 
 
 
-//--------------------------------------------
+//--------------------------------------------------------------
 
 
 int E_First(int i) throws BenchErrors.SpeziellerError{
 	throw new BenchErrors.SpeziellerError("Fehler in E");
 	return 0;
 }
-
 
 int D_First(int i) throws BenchErrors{
 	try{
@@ -127,8 +126,6 @@ int B_First(int i) throws BenchErrors{
 	}
 	return 0;
 }
-
-
 
 int A_First(int i) throws BenchErrors.NormalerError{
 	try{
@@ -168,7 +165,6 @@ int run_First(int64* results){
     results[run * 2 + 1] = end;
   }
 	return 0;
-
 }
 
 
@@ -192,16 +188,17 @@ void evaluate(int64* results, int64 start,int64 end){
   	}
   	variance = temp / MEASURE;
   	double standard_deviation = Math.sqrt(variance);
-	print("Gesamte Zeit:\t%.8fs\t%fms\n", seconds, seconds*1000);
-  	print("Durchschnittliche Zeit:\t%fs\t%fms\n", expectaion_value, expectaion_value*1000);
-	print("Varianz\t %fs\t%fms\t%fmikrosec.\n", variance, variance*1000, variance * 1000000);
-	print("Standardabweichung:\t%.6fs\t%fms\n", standard_deviation,
+	print("Gesamte Zeit:\t\t%.8f s\t%f ms\n", seconds, seconds*1000);
+  	print("Durchschnittliche Zeit:\t%f s\t%f ms\t%f mikrosec.\n", expectaion_value, expectaion_value*1000,expectaion_value*1000000);
+	print("Varianz:\t\t%f s\t%f ms\t%f mikrosec.\n", variance, variance*1000, variance * 1000000);
+	print("Standardabweichung:\t%.6f s\t%f ms\n", standard_deviation,
          standard_deviation * 1000);
 }
 
 int main(){
 	int64* results = (int64*) Posix.malloc(sizeof(int64)*2*MEASURE);
 	int64 start = get_monotonic_time();
+
 	run_All(results);
 	int64 end = get_monotonic_time();
 	print("Alle Funktionen:\n");
