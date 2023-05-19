@@ -1,5 +1,4 @@
-#include <bits/time.h>
-#include <bits/types/clockid_t.h>
+#include <sys/time.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,64 +37,68 @@ const int E_D( const int i );
 
 static inline struct timespec gtod();
 
-const int A_All( const int i ) {
+const int __attribute__(( optimize( "O0" )))  A_All( const int i ) {
 	if (B_All( i ) <= FEHLER)
-		return FEHLER;
+		return FEHLER - i;
 	return 0;
 }
 
 const int B_All( const int i ) {
 	if (C_All( i ) <= FEHLER)
-		return FEHLER;
+		return FEHLER - i;
 	return 0;
 }
 
 const int C_All( const int i ) {
 	if (D_All( i ) <= FEHLER)
-		return FEHLER;
+		return FEHLER - i;
 	return 0;
 }
 
 const int D_All( const int i ) {
 	if (E_All( i ) <= FEHLER)
-		return FEHLER;
+		return FEHLER - i;
 	return 0;
 }
 
 const int E_All( const int i ) {
-	return FEHLER;
+	return FEHLER - i;
 }
 
 int run_All( struct timespec *results ) {
 	srand( time( NULL ));
-	const int i = rand() % 2;
+	const int i = rand() % 10;
 	struct timespec start, end;
-
+	long count = 0;
 	// warm up
 	int run;
 	for (run = 0; run < WARMUP; ++run) {
-		if (A_All( i ) < FEHLER - 1) {
-			perror( "There was an error!\n" );
+		if (A_All( i ) < FEHLER - 3) {
+			++count;
+			//perror( "There was an error!\n" );
 		}
 	}
+	count = 0;
 
 	// REAL run
 	for (run = 0; run < MEASURE; ++run) {
 		start = gtod();
 		int error = A_All( i );
-		if (error < FEHLER - 1) {
-			perror( "There was an error!\n" );
+		if (error < FEHLER - 3) {
+			count += error;
+			//perror( "There was an error!\n" );
 		}
 		end = gtod();
 		results[run * 2] = start;
 		results[run * 2 + 1] = end;
 	}
+	printf( "%ld", count );
 	return 0;
 }
 
 // ---------------------------------------------------------------------------------------------
 
-const int A_First( const int i ) {
+const int __attribute__(( optimize( "O0" ))) A_First( const int i ) {
 	void *pointer = malloc( 2 );
 	int error = B_First( i );
 	if (error == BESONDERER_FEHLER) {
