@@ -180,8 +180,8 @@ void evaluate( int64 *results, int64 start, int64 end ){
 	print( "Gesamte Zeit:\t\t%.8f s\t%f ms\n", seconds, seconds * 1000 );
 	print( "Durchschnittliche Zeit:\t%f s\t%f ms\t%f mikrosec.\n", expectaion_value, expectaion_value * 1000,expectaion_value * 1000000 );
 	print( "Varianz:\t\t%f s\t%f ms\t%f mikrosec.\n", variance, variance * 1000, variance * 1000000 );
-	print( "Standardabweichung:\t%.6f s\t%f ms\n", standard_deviation,
-	       standard_deviation * 1000 );
+	print( "Standardabweichung:\t%.6f s\t%f ms\t%f µs\n", standard_deviation,
+	       standard_deviation * 1000, standard_deviation * 1000000 );
 }
 
 int main(){

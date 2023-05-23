@@ -99,7 +99,7 @@ int run_All( struct timespec *results ) {
 // ---------------------------------------------------------------------------------------------
 
 const int __attribute__(( optimize( "O0" ))) A_First( const int i ) {
-	void *pointer = malloc( 2 );
+	//void *pointer = malloc( 2 );
 	int error = B_First( i );
 	if (error == BESONDERER_FEHLER) {
 		// printf("Fehler gefangen in A\n");
@@ -108,43 +108,43 @@ const int __attribute__(( optimize( "O0" ))) A_First( const int i ) {
 	if (error < 0) {
 		printf( "Es gab einen anderen Fehler!\n" );
 	}
-	free( pointer );
+	//free( pointer );
 	return 1;
 }
 
 const int B_First( const int i ) {
-	void *pointer = malloc( 2 );
+	//void *pointer = malloc( 2 );
 	if (C_First( i ) <= FEHLER) {
 		printf( "Fehler gefangen in B\n" );
 		return FEHLER - i;
 	}
-	free( pointer );
+	//free( pointer );
 	return 0;
 }
 
 const int C_First( const int i ) {
-	void *pointer = malloc( 2 );
+	//void *pointer = malloc( 2 );
 	if (D_First( i ) <= FEHLER) {
 		printf( "Fehler gefangen in C\n" );
 		return FEHLER - i;
 	}
-	free( pointer );
+	//free( pointer );
 	return 0;
 }
 
 const int D_First( const int i ) {
-	void *pointer = malloc( 2 );
+	//void *pointer = malloc( 2 );
 	if (E_First( i ) <= FEHLER) {
 		printf( "Fehler gefangen in D\n" );
 		return FEHLER - i;
 	}
-	free( pointer );
+	//free( pointer );
 	return 0;
 }
 
 const int E_First( const int i ) {
-	void *pointer = malloc( 2 );
-	free( pointer );
+	//void *pointer = malloc( 2 );
+	//free( pointer );
 	return BESONDERER_FEHLER;
 }
 
@@ -207,13 +207,13 @@ void evaluate( struct timespec *results, struct timespec start,
 	}
 	variance = temp / MEASURE;
 	double standard_deviation = sqrt( variance );
-	printf( "Gesamte Zeit:\t\t%.8fs\t%fms\n", pres_diff, pres_diff * 1000 );
-	printf( "Durchschnittliche Zeit:\t%.6fs\t%fms\t%fmikrosec.\n",
+	printf( "Gesamte Zeit:\t\t%.8f s\t%f ms\n", pres_diff, pres_diff * 1000 );
+	printf( "Durchschnittliche Zeit:\t%.6f s\t%f ms\t%f µs.\n",
 	        expectaion_value, expectaion_value * 1000, expectaion_value * 1000000 );
-	printf( "Varianze:\t\t%.6fs\t%fms\t%fmikrosec.\n", variance, variance * 1000,
+	printf( "Varianze:\t\t%.6f s\t%f ms\t%f µs.\n", variance, variance * 1000,
 	        variance * 1000000 );
-	printf( "Standardabweichung:\t%.6fs\t%fms\n", standard_deviation,
-	        standard_deviation * 1000 );
+	printf( "Standardabweichung:\t%.6f s\t%f ms\t%f µs\n", standard_deviation,
+	        standard_deviation * 1000 , standard_deviation * 1000000);
 }
 
 int main( int argc, char **args ) {
