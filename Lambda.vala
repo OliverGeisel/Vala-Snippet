@@ -1,8 +1,8 @@
 
-static delegate int MethodWithTwoInt( int a, int b );
+static delegate int method_with_two_int( int a, int b );
 
 
-void print_result(MethodWithTwoInt func, int a , int b ){
+void print_result(method_with_two_int func, int a , int b ){
         stdout.printf("%d\n", func(a,b) );
 }
 
