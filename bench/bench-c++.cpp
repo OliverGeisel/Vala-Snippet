@@ -232,8 +232,8 @@ void evaluate( std::chrono::high_resolution_clock::time_point *results,
 	std::cout << "Gesamte Zeit:\t\t" << time
 	          << "s\t" << time * 1'000 << " ms\n"
 	          << "Durchschnittliche Zeit:\t" << expectaion_value << " s\t"
-	          << expectaion_value * 1'000 << " ms\t" << expectaion_value * 1'000'000 << " mikrosec.\n"
-	          << "Varianz:\t\t" << variance << " s\t" << variance * 1'000 << " ms\t" << variance * 1'000'000 << " mikrosec.\n"
+	          << expectaion_value * 1'000 << " ms\t" << expectaion_value * 1'000'000 << " µs\n"
+	          << "Varianz:\t\t" << variance << " s\t" << variance * 1'000 << " ms\t" << variance * 1'000'000 << " µs\n"
 	          << "Standardabweichung:\t" << standard_deviation << " s\t" << standard_deviation * 1'000 << " ms\t" << standard_deviation * 1'000'000 << " µs" << std::endl;
 }
 

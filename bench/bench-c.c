@@ -208,9 +208,9 @@ void evaluate( struct timespec *results, struct timespec start,
 	variance = temp / MEASURE;
 	double standard_deviation = sqrt( variance );
 	printf( "Gesamte Zeit:\t\t%.8f s\t%f ms\n", pres_diff, pres_diff * 1000 );
-	printf( "Durchschnittliche Zeit:\t%.6f s\t%f ms\t%f µs.\n",
+	printf( "Durchschnittliche Zeit:\t%.6f s\t%f ms\t%f µs\n",
 	        expectaion_value, expectaion_value * 1000, expectaion_value * 1000000 );
-	printf( "Varianze:\t\t%.6f s\t%f ms\t%f µs.\n", variance, variance * 1000,
+	printf( "Varianze:\t\t%.6f s\t%f ms\t%f µs\n", variance, variance * 1000,
 	        variance * 1000000 );
 	printf( "Standardabweichung:\t%.6f s\t%f ms\t%f µs\n", standard_deviation,
 	        standard_deviation * 1000 , standard_deviation * 1000000);
