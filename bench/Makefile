@@ -28,3 +28,5 @@ build-no-op-debug:
 	g++ -O0 -std=c++17 -g -o test_cpp_debug bench-c++.cpp
 	valac -X -O0 -X -g --pkg=posix --pkg=glib-2.0 -o test_vala_debug bench-vala.vala -X -lm
 
+clean:
+	rm -f test_c test_cpp test_vala test_c_debug test_cpp_debug test_vala_debug
